@@ -1,0 +1,2 @@
+To run the HTML pages, run main.py, then paste http://127.0.0.1:5000 into your browser to reach the home page. To
+reach other pages, add /***, with the name of the page replacing ***. For example /billing
