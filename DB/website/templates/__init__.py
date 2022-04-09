@@ -1,3 +1,4 @@
+import imp
 from flask import Flask
 
 def create_app():
@@ -6,8 +7,10 @@ def create_app():
 
     from.views import views
     from.auth import auth
+    from.dentist import dentist
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(dentist, url_prefix='/')
 
     return app
