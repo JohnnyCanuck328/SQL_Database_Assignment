@@ -8,7 +8,7 @@ def appointment():
     data = request.form
     print(data)
     return '''
-        <h2>View Patient Information</h2>
+        <h2>Appointment and Patient Information</h2>
 
         <!-- change GET to POST (post works with servers) emailaddress, dateofbirth, age-->
         <form method="GET">
@@ -46,7 +46,7 @@ def treatment():
     data = request.form
  
     return '''
-    <h2>View Treatments</h2>
+    <h2>Treatments</h2>
  
         <form method="GET">
         <label for="treatment_ID">Treatment ID:</label>
@@ -88,7 +88,7 @@ def procedure():
     data = request.form
  
     return '''
-    <h2>Add or Edit Procedure Data</h2>
+    <h2>Procedure Information</h2>
  
         <form method="GET">
         <label for="code">Procedure Code:</label>
@@ -124,7 +124,7 @@ def record():
     data = request.form
  
     return '''
-    <h2>Add or Edit Procedure Data</h2>
+    <h2>Patient medical records</h2>
  
         <form method="GET">
         <label for="record_ID">Record ID:</label>
