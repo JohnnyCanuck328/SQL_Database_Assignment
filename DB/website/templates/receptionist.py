@@ -1,9 +1,40 @@
 from flask import Blueprint, request, flash
+import js2py
 
-auth = Blueprint('auth', __name__)
+receptionist = Blueprint('receptionist', __name__)
 
+@receptionist.route('/receptionist/selection', methods=['GET', 'POST'])
+def selection():
+    return '''
+        <p id="demo"></p>
+        <h2>Hello, Please Choose What You Would Like to Do</h2>
 
-@auth.route('/patient', methods=['GET', 'POST'])
+        <button type="button" onclick="location.href='/receptionist/patient'">Patient Information</button>
+        <button type="button" onclick="location.href='/receptionist/appointment'">Appointment Information</button><br>
+
+        <button type="button" onclick="location.href='/receptionist/procedure'">Procedure Information</button>
+        <button type="button" onclick="location.href='/receptionist/billing'">Billing Information</button><br>
+
+        <button type="button" onclick="location.href='/receptionist/branch'">Branch Information</button>
+        <button type="button" onclick="location.href='/receptionist/invoice'">Invoice Information</button><br>
+        <button type="button" onclick="location.href='/receptionist/fee'">Fee Information</button><br><br>
+        <button type="button" onclick="location.href='/'">Home</button>
+    </form>
+
+<script>
+    function validateForm() {
+        let x = document.forms["myForm"]["fname"].value;
+        if (x == "") {
+            alert("Name must be filled out");
+            return false;
+        }
+    }
+</script>
+</body>
+</html>
+    '''
+
+@receptionist.route('/receptionist/patient', methods=['GET', 'POST'])
 def patient():
     data = request.form
     print(data)
@@ -11,7 +42,7 @@ def patient():
         <h2>Add and Update Patient Information</h2>
 
         <!-- change GET to POST (post works with servers) emailaddress, dateofbirth, age-->
-        <form action="patientInfo.php" method="POST">
+        <form name="repPat" form action="test.php" onsubmit="return validateForm()" method="POST">
         <label for="ssn">SSN:</label>
         <input type="text" id="ssn" name="ssn" value=""><br><br>
         <label for="fName">First Name:</label>
@@ -26,15 +57,25 @@ def patient():
         <input type="text" id="emailaddress" name="emailaddress" value=""><br><br>
         <label for="dateofbirth">Date of Birth:</label>
         <input type="text" id="dateofbirth" name="dateofbirth" value=""><br><br><br>
-        <input type="addUser" value="Add">
-        <input type="updateUser" value="Update">
+        <input type="submit" value="Add">
+        <input type="submit" value="Update"><br>
+        <button type="button" onclick="location.href='/receptionist/selection'">Back</button>
     </form>
 
+<script>
+    function validateForm() {
+        let x = document.forms["myForm"]["fname"].value;
+        if (x == "") {
+            alert("Name must be filled out");
+            return false;
+        }
+    }
+</script>
 </body>
 </html>
     '''
 
-@auth.route('/appointment', methods=['GET', 'POST'])
+@receptionist.route('/receptionist/appointment', methods=['GET', 'POST'])
 def appointment():
         data = request.form
         return '''
@@ -67,14 +108,15 @@ def appointment():
         <input type="text" id="room" name="room" value=""><br><br><br>
 
         <input type="submit" value="Add">
-        <input type="submit" value="Update">
+        <input type="submit" value="Update"><br>
+        <button type="button" onclick="location.href='/receptionist/selection'">Back</button>
     </form>
 
 </body>
 </html>
     '''
 
-@auth.route('/branch', methods=['GET', 'POST'])
+@receptionist.route('/receptionist/branch', methods=['GET', 'POST'])
 def branch():
     data = request.form
 
@@ -95,15 +137,16 @@ def branch():
         <input type="text" id="receptionist1" name="receptionist1" value=""><br>
         <input type="text" id="receptionist2" name="receptionist2" value=""><br><br>
 
-        <input type="add" value="Add Branch">
-        <input type="edit" value="Edit Branch">
+        <input type="submit" value="Add Branch">
+        <input type="submit" value="Edit Branch"><br>
+        <button type="button" onclick="location.href='/receptionist/selection'">Back</button>
     </form>
 
 </body>
 </html>
     '''
 
-@auth.route('/procedure', methods=['GET', 'POST'])
+@receptionist.route('/receptionist/procedure', methods=['GET', 'POST'])
 def procedure():
     data = request.form
  
@@ -132,15 +175,16 @@ def procedure():
         <label for="dose">Dose Amount:</label><br>
         <input type="text" id="dose" name="dose" value=""><br><br>
  
-        <input type="add" value="Add Procedure">
-        <input type="edit" value="Edit Procedure">
+        <input type="submit" value="Add Procedure">
+        <input type="submit" value="Edit Procedure"><br>
+        <button type="button" onclick="location.href='/receptionist/selection'">Back</button>
     </form>
  
 </body>
 </html>
     '''
  
-@auth.route('/invoice', methods=['GET', 'POST'])
+@receptionist.route('/receptionist/invoice', methods=['GET', 'POST'])
 def invoice():
     data = request.form
  
@@ -172,22 +216,23 @@ def invoice():
         <label for="pInsur">Patient Insurance:</label><br>
         <input type="text" id="pInsur" name="pInsur" value=""><br><br>
  
-        <input type="add" value="Add Invoic">
-        <input type="edit" value="Edit Invoic">
+        <input type="submit" value="Add Invoic">
+        <input type="submit" value="Edit Invoic"><br>
+        <button type="button" onclick="location.href='/receptionist/selection'">Back</button>
     </form>
  
 </body>
 </html>
     '''
  
-@auth.route('/fee', methods=['GET', 'POST'])
+@receptionist.route('/receptionist/fee', methods=['GET', 'POST'])
 def fee():
     data = request.form
- 
+    
     return '''
     <h2>Add or Edit Fee Data</h2>
  
-        <form method="POST">
+        <form name="repFee" form action="test.php" onsubmit="return validateForm()" method="POST">
         <label for="feeID">Fee Identifier:</label><br>
         <input type="text" id="feeID" name="feeID" value=""><br>
  
@@ -200,15 +245,25 @@ def fee():
         <label for="charge">Charge:</label><br>
         <input type="text" id="charge" name="charge" value=""><br><br>
  
-        <input type="add" value="Add Fee">
-        <input type="edit" value="Edit Fee">
+        <input type="submit" value="Add Fee">
+        <input type="submit" value="Edit Fee"><br>
+        <button type="button" onclick="location.href='/receptionist/selection'">Back</button>
     </form>
  
+ <script>
+    function validateForm() {
+        let x = document.forms["myForm"]["fname"].value;
+        if (x == "") {
+            alert("Name must be filled out");
+            return false;
+        }
+    }
+</script>
 </body>
 </html>
     '''
  
-@auth.route('/billing', methods=['GET', 'POST'])
+@receptionist.route('/receptionist/billing', methods=['GET', 'POST'])
 def billing():
     data = request.form
  
@@ -237,8 +292,9 @@ def billing():
         <label for="iBill">Insurance Billing:</label><br>
         <input type="text" id="iBill" name="iBill" value=""><br><br>
  
-        <input type="add" value="Add Billing">
-        <input type="edit" value="Edit Billing">
+        <input type="submit" value="Add Billing">
+        <input type="submit" value="Edit Billing"><br>
+        <button type="button" onclick="location.href='/receptionist/selection'">Back</button>
     </form>
  
 </body>
