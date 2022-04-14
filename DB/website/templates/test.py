@@ -1,20 +1,44 @@
-from flask import Flask
+import mysql.connector
+from mysql.connector import Error
+import pandas as pd
 
-app = Flask(__name__)
+def create_server_connection(host_name, user_name, user_password):
+    connection = None
+    try:
+        connection = mysql.connector.connect(
+            host=host_name,
+            user=user_name,
+            passwd=user_password
+        )
+        print("MySQL Database connection successful")
+    except Error as err:
+        print(f"Error: '{err}'")
+
+    return connection
 
 
-@app.route('/')
-def hello():
-    return 'Hello, World!'
+def create_db_connection(host_name, user_name, user_password, db_name):
+    connection = None
+    try:
+        connection = mysql.connector.connect(
+            host=host_name,
+            user=user_name,
+            passwd=user_password,
+            database=db_name
+        )
+        print("MySQL Database connection successful")
+    except Error as err:
+        print(f"Error: '{err}'")
 
+    return connection
 
-#print("HTTP/1.0 200 OK\n")
-#import cgi
-#orm = cgi.FieldStorage()
-#f_name=form["fName"].value
-#s_name=form["lName"].value
+def execute_query(connection, query):
+    cursor = connection.cursor()
+    try:
+        cursor.execute(query)
+        connection.commit()
+        print("Query successful")
+    except Error as err:
+        print(f"Error: '{err}'")
 
-
-#print("<br><b>First Name</b>",f_name)
-#print("<br><b>Second Name</b>",s_name)
-#print("<br><br><br><a href=form.htm>Back to Form</a>")
+connection = create_db_connection("localhost", "root", password, database)

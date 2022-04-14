@@ -1,5 +1,5 @@
 from flask import Blueprint, request, flash, redirect, url_for, request
-import js2py
+#import js2py
 
 import mysql.connector
 from mysql.connector import Error
@@ -10,75 +10,41 @@ receptionist = Blueprint('receptionist', __name__)
 
 #-----------------------------------------------------------------------------
 #Database stuff
+#HOST
+# ec2-3-224-125-117.compute-1.amazonaws.com
+#DATABASE 
+# d1olnnmm3arjl1
+#USER xtwhmialbflmvm
 
+###Successfully connects to a local database
 def testInsertion(fName, lName):
-    connection = create_db_connection("localhost", "root", "1qaz@WSX", "school")
-    mySql_insert_query = """
-    INSERT INTO teacher VALUES
-    (%s,  %s, %s, %s, %s, %s, %s, %s);
-    """
-    record = (8, fName, lName, "ENG", None, '1985-04-20', 123456, '+491774553676')
-    cursor = connection.cursor()
-    cursor.execute(mySql_insert_query, record)
+    mydb = mysql.connector.connect(
+        host = "localhost",
+        user="root",
+        password="1qaz@WSX",
+        database="school"
+    )
+    mycursor=mydb.cursor()
+    mySql_insert_query = "INSERT INTO customers (fname, lname) VALUES (%s, %s)"
+    data = (fName, lName)
+    mycursor.execute(mySql_insert_query, data)
+    mydb.commit()
+    print("success")
 
-def create_server_connection(host_name, user_name, user_password):
-    connection = None
-    try:
-        connection = mysql.connector.connect(
-            host=host_name,
-            user=user_name,
-            passwd=user_password
-        )
-        print("MySQL Database connection successful")
-    except Error as err:
-        print(f"Error: '{err}'")
+#def testInsertion(fName, lName):
+#    mydb = mysql.connector.connect(
+#        host = "ec2-3-224-125-117.compute-1.amazonaws.com",
+#        user="cqakclaggzefxd",
+#        password="24f6fc5c74e43db32a2143f192f7bfd199abb9f9aed74706bf9ca8a93b41bbea",
+#        database="dc01q4egnqo6ot"
+#    )
+#    mycursor=mydb.cursor()
+#    mySql_insert_query = "INSERT INTO test (fname, lname) VALUES (%s, %s)"
+#    data = (fName, lName)
+#    mycursor.execute(mySql_insert_query, data)
+#    mydb.commit()
+#    print("success")
 
-    return connection
-
-#connection = create_db_connection(hostName "localhost", username "root", password, tableName)
-def create_db_connection(host_name, user_name, user_password, db_name):
-    connection = None
-    try:
-        connection = mysql.connector.connect(
-            host=host_name,
-            user=user_name,
-            passwd=user_password,
-            database=db_name
-        )
-        print("MySQL Database connection successful")
-    except Error as err:
-        print(f"Error: '{err}'")
-
-    return connection
-
-def execute_query(connection, query):
-    cursor = connection.cursor()
-    try:
-        cursor.execute(query)
-        connection.commit()
-        print("Query successful")
-    except Error as err:
-        print(f"Error: '{err}'")
-
-
-#----USED TO CREATE TEST DATABASE
-create_teacher_table = """
-CREATE TABLE teacher (
-  teacher_id INT PRIMARY KEY,
-  first_name VARCHAR(40) NOT NULL,
-  last_name VARCHAR(40) NOT NULL,
-  language_1 VARCHAR(3) NOT NULL,
-  language_2 VARCHAR(3),
-  dob DATE,
-  tax_id INT UNIQUE,
-  phone_no VARCHAR(20)
-  );
- """
- 
-#uncomment first time running to create database school
-#create_database_query = "CREATE DATABASE school"
-#create_database(connection, create_database_query)
- 
 #-----------------------------------------------------------------------------
 
 
@@ -117,6 +83,7 @@ def selection():
 def patient():
     first_name = request.form.get('fName')
     last_name = request.form.get('lName')
+    print(first_name, " ", last_name)
     if request.method == "POST":
         testInsertion(first_name, last_name)
     
