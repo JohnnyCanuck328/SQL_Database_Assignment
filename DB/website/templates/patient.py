@@ -61,7 +61,6 @@ def patientAppointment():
         print(e)
     else:
         return (("","","","","","","","","",""))
-       
 
 
 def patientRecord():
