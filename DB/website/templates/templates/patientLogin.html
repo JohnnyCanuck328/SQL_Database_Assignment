@@ -1,0 +1,12 @@
+{% extends "base2.html" %} {% block title %} Login {% endblock %}
+{% block content %}
+<br/>
+<form name="patientLogin" form action="" onsubmit="" method="POST">
+    <label for="pID">Patient ID: </label>
+    <input type="text" id="pID" name="pID" value=""><br><br>
+
+    <input type="submit" value="login" name="login">
+    <button type="button" onclick="location.href='/'">Home</button>
+</form>>
+
+{% endblock %}
