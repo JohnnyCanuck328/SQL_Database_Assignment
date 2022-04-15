@@ -28,8 +28,16 @@ def idCheck(id):
     tempID = (id,)
     mycursor=mydb.cursor()
     myquery = "SELECT USERID FROM USER_ WHERE USERID = %s"
-    mycursor.execute(myquery, tempID)
-    idCount = mycursor.rowcount
+
+    try:
+        mycursor.execute(myquery, tempID)
+        myrow = mycursor.fetchall()
+        print(myrow)
+    except Exception as e:
+        print(e)
+    else:
+        idCount = mycursor.rowcount
+        print(idCount)
 
     if idCount > 0:
         return True
