@@ -39,7 +39,7 @@ def idCheck(id):
 
     if idCount > 0:
         global patientID
-        patientId = tempID
+        patientID = tempID
         return True
     return False
 
