@@ -61,10 +61,10 @@ def patientAppointment():
     except Exception as e:
         print(e)
     else:
-        if mycursor.rowcount != 0:
-            return myresult
-        else:
+        if mycursor.rowcount == 0:
             return (("","","","","","","","","",""))
+        else:
+            return myresult
 
 
 def patientRecord():
@@ -82,10 +82,10 @@ def patientRecord():
     except Exception as e:
         print(e)
     else:
-        if mycursor.rowcount != 0:
-            return myresult
-        else:
+        if mycursor.rowcount == 0:
             return (("","","","",""))
+        else:
+            return myresult
 
 
 def patientBilling():
@@ -103,10 +103,10 @@ def patientBilling():
     except Exception as e:
         print(e)
     else:
-        if mycursor.rowcount != 0:
-            return myresult
-        else:
+        if mycursor.rowcount == 0:
             return (("","","","","","","","",""))
+        else:
+            return myresult
 
 
 @patient.route('/patient/login', methods=['GET', 'POST'])
