@@ -15,7 +15,6 @@ passwordString = "1qaz@WSX"
 
 #ID testing
 patientID = ""
-uid = "123456"
 
 def idCheck(id):
     mydb = mysql.connector.connect(
@@ -31,17 +30,32 @@ def idCheck(id):
 
     try:
         mycursor.execute(myquery, tempID)
-        myrow = mycursor.fetchall()
-        print(myrow)
     except Exception as e:
         print(e)
     else:
         idCount = mycursor.rowcount
-        print(idCount)
 
     if idCount > 0:
+        patientId = tempID
         return True
     return False
+
+def patientAppointment():
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    myquery= "SELECT * FROM APPOINTMENT WHERE PATIENT = %s"
+    try:
+        mycursor.execute(myquery, patientID)
+        myresult = mycursor.fetchall()
+    except Exception as e:
+        print(e)
+    else:
+        return myresult
 
 @patient.route('/patient/login', methods=['GET', 'POST'])
 def login():
@@ -78,7 +92,7 @@ def selection():
 def appointment():
     data = request.form
 
-    return render_template("patientAppointment.html")
+    return render_template("patientAppointment.html", data=patientAppointment())
 
 
 @patient.route('/patient/record', methods=['GET', 'POST'])
