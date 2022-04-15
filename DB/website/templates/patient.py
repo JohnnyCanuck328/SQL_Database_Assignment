@@ -30,15 +30,13 @@ def idCheck(id):
 
     try:
         mycursor.execute(myquery, tempID)
+        myrow = mycursor.fetchall()
+        print(myrow)
     except Exception as e:
         print(e)
     else:
         idCount = mycursor.rowcount
-
-    if idCount > 0:
-        patientId = tempID
-        return True
-    return False
+        print(idCount)
 
 def patientAppointment():
     mydb = mysql.connector.connect(
