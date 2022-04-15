@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block title %} Treatment {% endblock %} 
+{% block content %}
+<br/>
+<table>
+    <tr>
+        <th>Treatment ID</th>
+        <th>Appointment Type</th>
+        <th>Treatment Type</th>
+        <th>Medication</th>
+        <th>Symptoms</th>
+        <th>Tooth involved</th>
+        <th>Comments</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        {% for cell in row %}
+        <td>{{cell}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table><br>
+<button type="button" onclick="location.href='/dentist/selection'">Back</button>
+{% endblock %}
