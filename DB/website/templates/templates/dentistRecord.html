@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block title %} Record {% endblock %} 
+{% block content %}
+<br/>
+<table>
+    <tr>
+        <th>Record ID</th>
+        <th>Price</th>
+        <th>Visit Type</th>
+        <th>Assigned Dentist</th>
+        <th>Additional Notes</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+        {% for cell in row %}
+        <td>{{cell}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table><br>
+<button type="button" onclick="location.href='/dentist/selection'">Back</button>
+{% endblock %}
