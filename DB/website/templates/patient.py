@@ -24,13 +24,15 @@ def idCheck(id):
         user=userName,
         password=passwordString
     )
-    mycursor=mydb.cursor()
-    mycursor.execute("SELECT USERID FROM USER_")
-    userid = mycursor.fetchall()
 
-    for userid in userid:
-        if id in userid:
-            return True
+    tempID = (id,)
+    mycursor=mydb.cursor()
+    myquery = "SELECT USERID FROM USER_ WHERE USERID = %s"
+    mycursor.execute(myquery, tempID)
+    idCount = mycursor.rowcount
+
+    if idCount > 0:
+        return True
     return False
 
 @patient.route('/patient/login', methods=['GET', 'POST'])
@@ -38,7 +40,7 @@ def login():
 
     id = request.form.get('pID')
     if request.method == "POST":
-        if idCheck(id):
+        if idCheck(id) :
                 flash('Success', category='success')
                 return redirect(url_for('patient.selection'))
         else:
