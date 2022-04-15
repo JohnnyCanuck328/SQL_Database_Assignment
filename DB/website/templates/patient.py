@@ -1,5 +1,6 @@
 from unicodedata import category
-from flask import Blueprint, request,render_template, flash, redirect, url_for, request
+from flask import Blueprint, request, render_template, flash, redirect, url_for, request
+from jinja2 import MemcachedBytecodeCache
 
 import mysql.connector
 from mysql.connector import Error
@@ -13,19 +14,20 @@ databaseName = "project"
 userName = "root"
 passwordString = "1qaz@WSX"
 
-#ID testing
+# ID testing
 patientID = ""
+
 
 def idCheck(id):
     mydb = mysql.connector.connect(
-        host = hostName,
+        host=hostName,
         database=databaseName,
         user=userName,
         password=passwordString
     )
 
     tempID = (id,)
-    mycursor=mydb.cursor()
+    mycursor = mydb.cursor()
     myquery = "SELECT USERID FROM USER_ WHERE USERID = %s"
 
     try:
@@ -43,69 +45,83 @@ def idCheck(id):
         return True
     return False
 
+
 def patientAppointment():
     mydb = mysql.connector.connect(
-        host = hostName,
+        host=hostName,
         database=databaseName,
         user=userName,
         password=passwordString
     )
-    mycursor=mydb.cursor()
-    myquery= "SELECT * FROM APPOINTMENT WHERE PATIENT = %s"
+    mycursor = mydb.cursor()
+    myquery = "SELECT * FROM APPOINTMENT WHERE PATIENT = %s"
     try:
         mycursor.execute(myquery, patientID)
         myresult = mycursor.fetchall()
     except Exception as e:
         print(e)
     else:
-        return myresult
+        if mycursor.rowcount != 0:
+            return myresult
+        else:
+            return (("","","","","","","","","",""))
+
 
 def patientRecord():
     mydb = mysql.connector.connect(
-        host = hostName,
+        host=hostName,
         database=databaseName,
         user=userName,
         password=passwordString
     )
-    mycursor=mydb.cursor()
-    myquery= "SELECT * FROM RECORD WHERE RECORDID IN (SELECT RECORD FROM APPOINTMENT WHERE PATIENT = %s)"
+    mycursor = mydb.cursor()
+    myquery = "SELECT * FROM RECORD WHERE RECORDID IN (SELECT RECORD FROM APPOINTMENT WHERE PATIENT = %s)"
     try:
         mycursor.execute(myquery, patientID)
         myresult = mycursor.fetchall()
     except Exception as e:
         print(e)
     else:
-        return myresult
+        if mycursor.rowcount != 0:
+            return myresult
+        else:
+            return (("","","","",""))
+
 
 def patientBilling():
     mydb = mysql.connector.connect(
-        host = hostName,
+        host=hostName,
         database=databaseName,
         user=userName,
         password=passwordString
     )
-    mycursor=mydb.cursor()
-    myquery= "SELECT * FROM PATIENT_BILLING WHERE PROCEDURE_ IN (SELECT PROCEDURE_ID FROM APPOINTMENT_PROCEDURE WHERE PATIENT_PROC = %s))"
+    mycursor = mydb.cursor()
+    myquery = "SELECT * FROM PATIENT_BILLING WHERE PROCEDURE_ IN (SELECT PROCEDURE_ID FROM APPOINTMENT_PROCEDURE WHERE PATIENT_PROC = %s))"
     try:
         mycursor.execute(myquery, patientID)
         myresult = mycursor.fetchall()
     except Exception as e:
         print(e)
     else:
-        return myresult
+        if mycursor.rowcount != 0:
+            return myresult
+        else:
+            return (("","","","","","","","",""))
+
 
 @patient.route('/patient/login', methods=['GET', 'POST'])
 def login():
 
     id = request.form.get('pID')
     if request.method == "POST":
-        if idCheck(id) :
-                flash('Success', category='success')
-                return redirect(url_for('patient.selection'))
+        if idCheck(id):
+            flash('Success', category='success')
+            return redirect(url_for('patient.selection'))
         else:
             flash('Invalid patient ID, try again.', category='error')
-         
+
     return render_template("patientLogin.html")
+
 
 @patient.route('/patient/selection', methods=['GET', 'POST'])
 def selection():
@@ -137,6 +153,7 @@ def record():
     data = request.form
 
     return render_template("patientRecord.html", data=patientRecord())
+
 
 @patient.route('/patient/billing', methods=['GET', 'POST'])
 def billing():
