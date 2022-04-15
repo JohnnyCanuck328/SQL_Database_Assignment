@@ -38,6 +38,11 @@ def idCheck(id):
         idCount = mycursor.rowcount
         print(idCount)
 
+    if idCount > 0:
+        patientId = tempID
+        return True
+    return False
+
 def patientAppointment():
     mydb = mysql.connector.connect(
         host = hostName,
