@@ -1,6 +1,16 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, request,render_template, flash, redirect, url_for, request
+
+import mysql.connector
+from mysql.connector import Error
+import pandas as pd
 
 dentist = Blueprint('dentist', __name__)
+
+# connection information
+hostName = "localhost"
+databaseName = "project"
+userName = "root"
+passwordString = "1qaz@WSX"
 
 
 @dentist.route('/dentist/selection', methods=['GET', 'POST'])
@@ -25,27 +35,74 @@ def selection():
 @dentist.route('/dentist/appointment', methods=['GET', 'POST'])
 def appointment():
     data = request.form
+
+    mydb = mysql.connector.connect(
+        host=hostName, 
+        databse=databaseName, 
+        user=userName, 
+        password=passwordString
+    )
+
+    mycursor=mydb.cursor()
+    mycursor.execute("SELECT * FROM APPOINTMENT")
+    myresult = mycursor.fetchall()
+
     somedata = (("Rolf", "Software Engineer", "45000"),
-               ("sponge", "Hardware Engineer", "120000"),
+                ("sponge", "Hardware Engineer", "120000"),
                 ("Bob", "Mechanical Engineer", "40000"))
 
-    return render_template("dentistAppointment.html", data = somedata)
+    return render_template("dentistAppointment.html", data=myresult)
 
 
 @dentist.route('/dentist/treatment', methods=['GET', 'POST'])
 def treatment():
     data = request.form
 
-    return render_template("dentistTreatment.html")
+    mydb = mysql.connector.connect(
+        host=hostName, 
+        databse=databaseName, 
+        user=userName, 
+        password=passwordString
+    )
+
+    mycursor=mydb.cursor()
+    mycursor.execute("SELECT * FROM TREATMENT")
+    myresult = mycursor.fetchall()
+
+    return render_template("dentistTreatment.html", data=myresult)
+
 
 @dentist.route('/dentist/procedure', methods=['GET', 'POST'])
 def procedure():
     data = request.form
 
-    return render_template("dentistProcedure.html")
+    mydb = mysql.connector.connect(
+        host=hostName, 
+        databse=databaseName, 
+        user=userName, 
+        password=passwordString
+    )
+
+    mycursor=mydb.cursor()
+    mycursor.execute("SELECT * FROM TREATMENT")
+    myresult = mycursor.fetchall()
+
+    return render_template("dentistProcedure.html", data=myresult)
+
 
 @dentist.route('/dentist/record', methods=['GET', 'POST'])
 def record():
     data = request.form
 
-    return render_template("dentistRecord.html")
+    mydb = mysql.connector.connect(
+        host=hostName, 
+        databse=databaseName, 
+        user=userName, 
+        password=passwordString
+    )
+
+    mycursor=mydb.cursor()
+    mycursor.execute("SELECT * FROM TREATMENT")
+    myresult = mycursor.fetchall()
+
+    return render_template("dentistRecord.html", date=myresult)
