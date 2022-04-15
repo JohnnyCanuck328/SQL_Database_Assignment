@@ -1,15 +1,13 @@
-{% extends "base.html" %} {% block title %} Appointment {% endblock %}
+{% extends "base2.html" %} {% block title %} Record {% endblock %} 
 {% block content %}
 <br/>
 <table>
     <tr>
-        <th>Appointment ID</th>
-        <th>Start time</th>
-        <th>End time</th>
-        <th>Date</th>
-        <th>Appointment Type</th>
-        <th>Status</th>
-        <th>Room Assigned</th>
+        <th>Record ID</th>
+        <th>Price</th>
+        <th>Visit Type</th>
+        <th>Assigned Dentist</th>
+        <th>Additional Notes</th>
     </tr>
     {% for row in data %}
     <tr>
@@ -19,5 +17,5 @@
     </tr>
     {% endfor %}
 </table><br>
-<button type="button" onclick="location.href='/dentist/selection'">Back</button>
+<button type="button" onclick="location.href='/patient/selection'">Back</button>
 {% endblock %}
