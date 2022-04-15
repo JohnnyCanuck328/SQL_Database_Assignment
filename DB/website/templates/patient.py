@@ -57,6 +57,40 @@ def patientAppointment():
     else:
         return myresult
 
+def patientRecord():
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    myquery= "SELECT * FROM RECORD WHERE RECORDID IN (SELECT RECORD FROM APPOINTMENT WHERE PATIENT = %s)"
+    try:
+        mycursor.execute(myquery, patientID)
+        myresult = mycursor.fetchall()
+    except Exception as e:
+        print(e)
+    else:
+        return myresult
+
+def patientBilling():
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    myquery= "SELECT * FROM PATIENT_BILLING WHERE PROCEDURE_ IN (SELECT PROCEDURE_ID FROM APPOINTMENT_PROCEDURE WHERE PATIENT_PROC = %s))"
+    try:
+        mycursor.execute(myquery, patientID)
+        myresult = mycursor.fetchall()
+    except Exception as e:
+        print(e)
+    else:
+        return myresult
+
 @patient.route('/patient/login', methods=['GET', 'POST'])
 def login():
 
@@ -99,10 +133,10 @@ def appointment():
 def record():
     data = request.form
 
-    return render_template("patientRecord.html")
+    return render_template("patientRecord.html", data=patientRecord())
 
 @patient.route('/patient/billing', methods=['GET', 'POST'])
 def billing():
     data = request.form
 
-    return render_template("patientBilling.html")
+    return render_template("patientBilling.html", data=patientBilling())
