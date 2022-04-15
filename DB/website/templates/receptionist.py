@@ -154,7 +154,7 @@ def appointmentUpdate(id, start, end, date, appointmenttype, status, room, patie
         database=databaseName
     )
     mycursor=mydb.cursor()
-    sql_update_query = """Update appointment set start_time = %s, end_time = %s, date_ = %s, appointment_type = %s, status = %s, room_assigned = %s,
+    sql_update_query = """Update appointment set start_time = %s, end_time = %s, date_ = %s, appointment_type = %s, staus = %s, room_assigned = %s,
     patient = %s, dentist = %s, record_ = %s, invoice = %s where appointment_id = %s"""
     data = (start, end, date, appointmenttype, status, room, patient, dentist, record, invoice, id)
     mycursor.execute(sql_update_query, data)

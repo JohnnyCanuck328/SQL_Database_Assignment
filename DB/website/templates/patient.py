@@ -58,13 +58,11 @@ def patientAppointment():
     try:
         mycursor.execute(myquery, patientID)
         myresult = mycursor.fetchall()
+        print(myresult)
     except Exception as e:
         print(e)
     else:
-        if mycursor.rowcount == 0:
-            return (("","","","","","","","","",""))
-        else:
-            return myresult
+        return (("","","","","","","","","",""))
 
 
 def patientRecord():
