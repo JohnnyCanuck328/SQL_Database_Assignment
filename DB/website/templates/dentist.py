@@ -24,6 +24,42 @@ def dentistAppointment():
     myresult = mycursor.fetchall()
     return myresult
 
+def dentistProcedure():
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("SELECT * FROM APPOINTMENT_PROCEDURE")
+    myresult = mycursor.fetchall()
+    return myresult
+
+def dentistTreatment():
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("SELECT * FROM TREATMENT")
+    myresult = mycursor.fetchall()
+    return myresult
+
+def dentistRecord():
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("SELECT * FROM RECORD")
+    myresult = mycursor.fetchall()
+    return myresult
+
 
 @dentist.route('/dentist/selection', methods=['GET', 'POST'])
 def selection():
@@ -48,10 +84,6 @@ def selection():
 def appointment():
     data = request.form
 
-    somedata = (("Rolf", "Software Engineer", "45000"),
-                ("sponge", "Hardware Engineer", "120000"),
-                ("Bob", "Mechanical Engineer", "40000"))
-
     return render_template("dentistAppointment.html", data=dentistAppointment())
 
 
@@ -59,18 +91,18 @@ def appointment():
 def treatment():
     data = request.form
 
-    return render_template("dentistTreatment.html")
+    return render_template("dentistTreatment.html", data=dentistTreatment())
 
 
 @dentist.route('/dentist/procedure', methods=['GET', 'POST'])
 def procedure():
     data = request.form
 
-    return render_template("dentistProcedure.html")
+    return render_template("dentistProcedure.html", date=dentistProcedure())
 
 
 @dentist.route('/dentist/record', methods=['GET', 'POST'])
 def record():
     data = request.form
 
-    return render_template("dentistRecord.html")
+    return render_template("dentistRecord.html", data=dentistRecord())
