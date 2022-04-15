@@ -28,7 +28,7 @@ def idCheck(id):
     mycursor.execute("SELECT USERID FROM USER_")
     userid = mycursor.fetchall()
 
-    for uerid in userid:
+    for userid in userid:
         if id == userid:
             return True
     return False
@@ -40,7 +40,6 @@ def login():
     if request.method == "POST":
         if idCheck(id):
                 flash('Success', category='success')
-                login = True
                 return redirect(url_for('patient.selection'))
         else:
             flash('Invalid patient ID, try again.', category='error')
