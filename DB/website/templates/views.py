@@ -13,6 +13,7 @@ def home():
 
 <button type="button" onclick="location.href='/receptionist/selection'">Receptionist</button>
 <button type="button" onclick="location.href='/dentist/selection'">Dentist</button>
+<button type="button" onclick="location.href='/patient/selection'">Patient</button>
  
 </body>
 </html>
