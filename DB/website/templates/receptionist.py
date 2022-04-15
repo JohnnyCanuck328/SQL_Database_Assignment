@@ -41,14 +41,95 @@ def patientUpdate(pID, gender, insurance, email, DoB, status, gID):
         password=passwordString
     )
     mycursor=mydb.cursor()
-    sql_update_query = """Update customers set gender = %s, insurance = %s, email_address = %s, date_of_birth = %s,
+    sql_update_query = """Update patient set gender = %s, insurance = %s, email_address = %s, date_of_birth = %s,
      age_status = %s, guardian_id = %s where PATIENT_ID = %s"""
     data = (gender, insurance, email, DoB, status, gID, pID)
     mycursor.execute(sql_update_query, data)
     mydb.commit()
     print("update final")
+
+
+
+
+
+###HANDLES PATIENTPHONE-----------------------------------------------------------
+def phoneInsertion(pID, phone):
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    mySql_insert_query = "INSERT INTO patient_phone (patient_, phone_number) VALUES (%s, %s)"
+    data = (pID, phone)
+    mycursor.execute(mySql_insert_query, data)
+    mydb.commit()
+    print("insert")
  
+def phoneUpdate(pID, phone):
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    sql_update_query = """Update patient_phone set patient_ = %s where PATIENT_ID = %s"""
+    data = (pID, phone)
+    mycursor.execute(sql_update_query, data)
+    mydb.commit()
+    print("update final")
+
+
+
+###HANDLES EMPLOYEE-----------------------------------------------------------
+def employeeInsertion(id, role, salary, branch):
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    mySql_insert_query = "INSERT INTO employee (employee_id, role_, salary, branch_id) VALUES (%s, %s, %s, %s)"
+    data = (id, role, salary, branch)
+    mycursor.execute(mySql_insert_query, data)
+    mydb.commit()
+    print("insert")
  
+def employeeUpdate(id, role, salary, branch):
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    sql_update_query = """Update employee set role_ = %s, salary = %s, branch_id = %s where employee_id = %s"""
+    data = (role, salary, branch, id)
+    mycursor.execute(sql_update_query, data)
+    mydb.commit()
+    print("update final")
+
+
+###HANDLES EMPLOYEE LOCATION-----------------------------------------------------------
+def locationInsertion(branch, id):
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    mySql_insert_query = "INSERT INTO employee_location (branch_id, employee_id) VALUES (%s, %s)"
+    data = (branch, id)
+    mycursor.execute(mySql_insert_query, data)
+    mydb.commit()
+    print("insert")
+ 
+
+
 ###HANDLES APPOINTMENT-----------------------------------------------------------
 def appointmentInsertion(id, start, end, date, appointmenttype, status, room, patient, dentist, record, invoice):
     mydb = mysql.connector.connect(
@@ -280,7 +361,8 @@ def selection():
         <button type="button" onclick="location.href='/receptionist/branch'">Branch Information</button>
         <button type="button" onclick="location.href='/receptionist/invoice'">Invoice Information</button><br>
         <button type="button" onclick="location.href='/receptionist/fee'">Fee Information</button>
-        <button type="button" onclick="location.href='/receptionist/user'">User Information</button><br><br>
+        <button type="button" onclick="location.href='/receptionist/user'">User Information</button><br>
+        <button type="button" onclick="location.href='/receptionist/employee'">Employee Information</button><br><br>
         <button type="button" onclick="location.href='/'">Home</button>
     </form>
 </body>
@@ -296,11 +378,14 @@ def patient():
     insurance = request.form.get('insurance')
     email = request.form.get('emailaddress')
     status = request.form.get('status')
+    phone = request.form.get('phone')
     if request.method == "POST":
         if request.form.get('Add') == 'Add':
             patientInsertion(pID, gID, gender, DoB, insurance, email, status)
+            phoneInsertion(pID, phone)
         elif  request.form.get('Update') == 'Update':
             patientUpdate(pID, gID, gender, DoB, insurance, email, status)
+            phoneInsertion(pID, phone)
         else:
             pass
    
@@ -319,7 +404,7 @@ def patient():
         <input type="text" id="gender" name="gender" value=""><br><br>
  
         <label for="date">Date of Birth:</label>
-        <input type="text" id="date" name="date" value=""><br><br>
+        <input type="date" id="date" name="date" value=""><br><br>
  
         <label for="insurance">Insurance:</label>
         <input type="text" id="insurance" name="insurance" value=""><br><br>
@@ -328,7 +413,10 @@ def patient():
         <input type="text" id="emailaddress" name="emailaddress" value=""><br><br>
  
         <label for="status">Age Status:</label>
-        <input type="text" id="status" name="status" value=""><br><br><br>
+        <input type="text" id="status" name="status" value=""><br><br>
+        
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required><br><br><br>
  
         <input type="submit" value="Add" name="Add">
         <input type="submit" value="Update" name="Update"><br>
@@ -337,6 +425,49 @@ def patient():
 </body>
 </html>
     '''
+
+@receptionist.route('/receptionist/employee', methods=['GET', 'POST'])
+def employee():
+    id = request.form.get('eID')
+    role = request.form.get('role')
+    salary = request.form.get('salary')
+    branch = request.form.get('branch')
+    if request.method == "POST":
+        if request.form.get('Add') == 'Add':
+            employeeInsertion(id, role, salary, branch)
+            locationInsertion(branch, id)
+        elif  request.form.get('Update') == 'Update':
+            employeeUpdate(id, role, salary, branch)
+            locationInsertion(branch, id)
+        else:
+            pass
+   
+    return '''
+        <h2>Add and Update Employee Information</h2>
+ 
+        <!-- change GET to POST (post works with servers) emailaddress, dateofbirth, age-->
+        <form name="repPat" form action="" onsubmit="return validateForm()" method="POST">
+        <label for="eID">Employee ID:</label>
+        <input type="text" id="eID" name="eID" value=""><br><br>
+ 
+        <label for="role">Role:</label>
+        <input type="text" id="role" name="role" value=""><br><br>
+ 
+        <label for="salary">Salary:</label>
+        <input type="text" id="salary" name="salary" value=""><br><br>
+ 
+        <label for="branch">Branch ID:</label>
+        <input type="text" id="branch" name="branch" value=""><br><br><br>
+ 
+        <input type="submit" value="Add" name="Add">
+        <input type="submit" value="Update" name="Update"><br>
+        <button type="button" onclick="location.href='/receptionist/selection'">Back</button>
+    </form>
+</body>
+</html>
+    '''
+
+
  ##change
 @receptionist.route('/receptionist/appointment', methods=['GET', 'POST'])
 def appointment():
@@ -359,7 +490,7 @@ def appointment():
         else:
             pass
     return '''
-        <h2>Add and Update Patient Information</h2>
+        <h2>Add and Update Appointment Information</h2>
  
         <!-- change GET to POST (post works with servers) emailaddress, dateofbirth, age-->
         <form action="/" method="POST">
@@ -367,10 +498,10 @@ def appointment():
         <input type="text" id="id" name="id" value=""><br><br>
  
         <label for="start">Start Time:</label>
-        <input type="text" id="start" name="start" value=""><br><br>
+        <input type="time" id="start" name="start" value=""><br><br>
  
         <label for="end">End Time:</label>
-        <input type="text" id="end" name="end" value=""><br><br>
+        <input type="time" id="end" name="end" value=""><br><br>
  
         <label for="dentist">Dentist:</label>
         <input type="text" id="dentist" name="dentist" value=""><br><br>
@@ -643,9 +774,6 @@ def billing():
         <label for="pBill">Patient Billing:</label><br>
         <input type="text" id="pBill" name="pBill" value=""><br>
  
-        <label for="iBill">Insurance Billing:</label><br>
-        <input type="text" id="iBill" name="iBill" value=""><br>
-       
         <label for="iBill">Insurance Billing:</label><br>
         <input type="text" id="iBill" name="iBill" value=""><br>
        
