@@ -14,9 +14,6 @@ databaseName = "project"
 userName = "root"
 passwordString = "1qaz@WSX"
 
-# ID testing
-patientID = ""
-
 
 def idCheck(id):
     mydb = mysql.connector.connect(
@@ -41,6 +38,7 @@ def idCheck(id):
         print(idCount)
 
     if idCount > 0:
+        global patientID
         patientId = tempID
         return True
     return False
@@ -58,13 +56,12 @@ def patientAppointment():
     try:
         mycursor.execute(myquery, patientID)
         myresult = mycursor.fetchall()
+        print(myresult)
     except Exception as e:
         print(e)
     else:
-        if mycursor.rowcount == 0:
-            return (("","","","","","","","","",""))
-        else:
-            return myresult
+        return (("","","","","","","","","",""))
+       
 
 
 def patientRecord():
