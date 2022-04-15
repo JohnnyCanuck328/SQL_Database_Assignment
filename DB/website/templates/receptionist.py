@@ -47,11 +47,11 @@ def patientUpdate(pID, gender, insurance, email, DoB, status, gID):
     mycursor.execute(sql_update_query, data)
     mydb.commit()
     print("update final")
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
 ###HANDLES PATIENTPHONE-----------------------------------------------------------
 def phoneInsertion(pID, phone):
     mydb = mysql.connector.connect(
@@ -80,9 +80,9 @@ def phoneUpdate(pID, phone):
     mycursor.execute(sql_update_query, data)
     mydb.commit()
     print("update final")
-
-
-
+ 
+ 
+ 
 ###HANDLES EMPLOYEE-----------------------------------------------------------
 def employeeInsertion(id, role, salary, branch):
     mydb = mysql.connector.connect(
@@ -111,8 +111,8 @@ def employeeUpdate(id, role, salary, branch):
     mycursor.execute(sql_update_query, data)
     mydb.commit()
     print("update final")
-
-
+ 
+ 
 ###HANDLES EMPLOYEE LOCATION-----------------------------------------------------------
 def locationInsertion(branch, id):
     mydb = mysql.connector.connect(
@@ -128,8 +128,8 @@ def locationInsertion(branch, id):
     mydb.commit()
     print("insert")
  
-
-
+ 
+ 
 ###HANDLES APPOINTMENT-----------------------------------------------------------
 def appointmentInsertion(id, start, end, date, appointmenttype, status, room, patient, dentist, record, invoice):
     mydb = mysql.connector.connect(
@@ -139,7 +139,8 @@ def appointmentInsertion(id, start, end, date, appointmenttype, status, room, pa
         database=databaseName
     )
     mycursor=mydb.cursor()
-    mySql_insert_query = "INSERT INTO customers (id, fname, lname) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    mySql_insert_query = """INSERT INTO appointment (appointment_id, start_time, end_time, date_, appointment_type, staus,
+    room_assigned, patient, dentist, record_, invoice_) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
     data = (id, start, end, date, appointmenttype, status, room, patient, dentist, record, invoice)
     mycursor.execute(mySql_insert_query, data)
     mydb.commit()
@@ -343,6 +344,35 @@ def userUpdate(id, password, ssn, fname, lname, address):
     mycursor.execute(sql_update_query, data)
     mydb.commit()
     print("update final")
+
+###HANDLES RECORD-----------------------------------------------------------
+def recordInsertion(id, price, type, dentist, notes):
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    mySql_insert_query = "INSERT INTO record (record_id, price, visit_type, assigned_dentist, additional_notes) VALUES (%s, %s, %s, %s, %s)"
+    data = (id, price, type, dentist, notes)
+    mycursor.execute(mySql_insert_query, data)
+    mydb.commit()
+    print("insert")
+ 
+def recordUpdate(id, price, type, dentist, notes):
+    mydb = mysql.connector.connect(
+        host = hostName,
+        database=databaseName,
+        user=userName,
+        password=passwordString
+    )
+    mycursor=mydb.cursor()
+    sql_update_query = """Update record set price = %s, visit_type = %s, assigned_dentist = %s, additional_notes = %s where record_id = %s"""
+    data = (price, type, dentist, notes, id)
+    mycursor.execute(sql_update_query, data)
+    mydb.commit()
+    print("update final")
 #-----------------------------------------------------------------------------
  
  
@@ -362,7 +392,8 @@ def selection():
         <button type="button" onclick="location.href='/receptionist/invoice'">Invoice Information</button><br>
         <button type="button" onclick="location.href='/receptionist/fee'">Fee Information</button>
         <button type="button" onclick="location.href='/receptionist/user'">User Information</button><br>
-        <button type="button" onclick="location.href='/receptionist/employee'">Employee Information</button><br><br>
+        <button type="button" onclick="location.href='/receptionist/employee'">Employee Information</button>
+        <button type="button" onclick="location.href='/receptionist/record'">Record Information</button><br><br>
         <button type="button" onclick="location.href='/'">Home</button>
     </form>
 </body>
@@ -414,7 +445,7 @@ def patient():
  
         <label for="status">Age Status:</label>
         <input type="text" id="status" name="status" value=""><br><br>
-        
+       
         <label for="phone">Phone Number:</label>
         <input type="tel" id="phone" name="phone" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required><br><br><br>
  
@@ -425,7 +456,7 @@ def patient():
 </body>
 </html>
     '''
-
+ 
 @receptionist.route('/receptionist/employee', methods=['GET', 'POST'])
 def employee():
     id = request.form.get('eID')
@@ -466,8 +497,8 @@ def employee():
 </body>
 </html>
     '''
-
-
+ 
+ 
  ##change
 @receptionist.route('/receptionist/appointment', methods=['GET', 'POST'])
 def appointment():
@@ -493,7 +524,7 @@ def appointment():
         <h2>Add and Update Appointment Information</h2>
  
         <!-- change GET to POST (post works with servers) emailaddress, dateofbirth, age-->
-        <form action="/" method="POST">
+        <form action="" method="POST">
         <label for="id">Appointment ID:</label>
         <input type="text" id="id" name="id" value=""><br><br>
  
@@ -515,7 +546,7 @@ def appointment():
         <label for="appointmenttype">Appointment Type:</label>
         <input type="text" id="appointmenttype" name="appointmenttype" value=""><br><br>
  
-        <label for="status">Status:</label>
+        <label for="status">Status of Visit:</label>
         <input type="text" id="status" name="status" value=""><br><br>
  
         <label for="record">Record:</label>
@@ -670,8 +701,8 @@ def invoice():
         <label for="date">Date of Issue:</label><br>
         <input type="date" id="date" name="date" value=""><br>
  
-        <label for="conInfo">Contact Info:</label><br>
-        <input type="text" id="conInfo" name="conInfo" value=""><br>
+        <label for="conInfo">Contact Information (phone number):</label><br>
+        <input type="tel" id="conInfo" name="conInfo" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required><br>
  
         <label for="pCharge">Patient Charge:</label><br>
         <input type="text" id="pCharge" name="pCharge" value=""><br>
@@ -825,6 +856,49 @@ def user():
        
         <label for="address">Address:</label><br>
         <input type="text" id="address" name="address" value=""><br><br>
+ 
+        <input type="submit" value="Add" name="Add">
+        <input type="submit" value="Update" name="Update"><br>
+        <button type="button" onclick="location.href='/receptionist/selection'">Back</button>
+    </form>
+ 
+</body>
+</html>
+    '''
+
+@receptionist.route('/receptionist/record', methods=['GET', 'POST'])
+def record():
+    id = request.form.get('id')
+    price = request.form.get('price')
+    type = request.form.get('type')
+    dentist = request.form.get('dentist')
+    notes = request.form.get('notes')
+    if request.method == "POST":
+        if request.form.get('Add') == 'Add':
+            recordInsertion(id, price, type, dentist, notes)
+        elif  request.form.get('Update') == 'Update':
+            recordUpdate(id, price, type, dentist, notes)
+        else:
+            pass
+ 
+    return '''
+    <h2>Add or Edit Record Data</h2>
+ 
+        <form method="POST">
+        <label for="id">Record ID:</label><br>
+        <input type="text" id="id" name="id" value=""><br>
+ 
+        <label for="price">Price:</label><br>
+        <input type="text" id="price" name="price" value=""><br>
+ 
+        <label for="type">Visit Type:</label><br>
+        <input type="text" id="type" name="type" value=""><br>
+       
+        <label for="dentist">Assigned Dentist ID:</label><br>
+        <input type="text" id="dentist" name="dentist" value=""><br>
+       
+        <label for="notes">Additional Notes:</label><br>
+        <input type="text" id="notes" name="notes" value=""><br><br>
  
         <input type="submit" value="Add" name="Add">
         <input type="submit" value="Update" name="Update"><br>
