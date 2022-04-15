@@ -25,12 +25,12 @@ def idCheck(id):
         password=passwordString
     )
     mycursor=mydb.cursor()
-    mycursor.execute("SELECT USERID FROM USER_")
-    userid = mycursor.fetchall()
+    mycursor.execute("SELECT USERID FROM USER_ WHERE USERID = id")
+    idCount = mycursor.rowcount
 
-    for userid in userid:
-        if id == userid:
-            return True
+    if idCount > 0:
+        return True
+        
     return False
 
 @patient.route('/patient/login', methods=['GET', 'POST'])
