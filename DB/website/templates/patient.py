@@ -12,7 +12,7 @@ patient = Blueprint('patient', __name__)
 hostName = "localhost"
 databaseName = "project"
 userName = "root"
-passwordString = "1qaz@WSX"
+passwordString = "lanhui1065971675"
 
 
 def idCheck(id):
@@ -61,7 +61,7 @@ def patientAppointment():
         print(e)
     else:
         if mycursor.rowcount == 0:
-            return (("","","","","","","","","",""))
+            return (("null","null","null","null","null","null","null","null","null","null","null"),)
         else:
             return myresult
 
@@ -83,7 +83,7 @@ def patientRecord():
         print(e)
     else:
         if mycursor.rowcount == 0:
-            return (("","","","",""))
+            return (("null","null","null","null","null"),)
         else:
             return myresult
 
@@ -105,7 +105,7 @@ def patientBilling():
         print(e)
     else:
         if mycursor.rowcount == 0:
-            return (("","","","","","","","",""))
+            return (("null","null","null","null","null","null","null","null","null"),)
         else:
             return myresult
 

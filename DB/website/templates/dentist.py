@@ -59,7 +59,7 @@ def dentistAppointment():
         print(e)
     else:
         if mycursor.rowcount == 0:
-            return (("","","","","","","","","",""))
+            return (("null","null","null","null","null","null","null","null","null","null","null"),)
         else:
             return myresult
 
@@ -80,7 +80,7 @@ def dentistProcedure():
         print(e)
     else:
         if mycursor.rowcount == 0:
-            return (("","","","","","","","","",""))
+            return (("null","null","null","null","null","null","null","null","null","null"),)
         else:
             return myresult
 
@@ -101,7 +101,7 @@ def dentistTreatment():
         print(e)
     else:
         if mycursor.rowcount == 0:
-            return (("","","","","","",""))
+            return (("null","null","null","null","null","null","null"),)
         else:
             return myresult
 
@@ -122,7 +122,7 @@ def dentistRecord():
         print(e)
     else:
         if mycursor.rowcount == 0:
-            return (("","","","",""))
+            return (("null","null","null","null","null"),)
         else:
             return myresult
 
