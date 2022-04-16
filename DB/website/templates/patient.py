@@ -60,7 +60,10 @@ def patientAppointment():
     except Exception as e:
         print(e)
     else:
-        return (("","","","","","","","","",""))
+        if mycursor.rowcount == 0:
+            return (("","","","","","","","","",""))
+        else:
+            return myresult
 
 
 def patientRecord():
