@@ -224,36 +224,59 @@ def procedureUpdate(id, code, date, patient, toothInvolved, type, appointment, d
  
  
 ###HANDLES INVOICE-----------------------------------------------------------
-def invoiceInsertion(iID, DoI, contact, pCharge, iCharge, totalFee, discount, penalty):
+def invoiceInsertion(iID, pID, DoI, contact, pCharge, iCharge, penalty):
     mydb = mysql.connector.connect(
-        host = hostName,
+        host=hostName,
         user=userName,
         password=passwordString,
         database=databaseName
     )
-    mycursor=mydb.cursor()
+    mycursor = mydb.cursor()
     mySql_insert_query = "INSERT INTO invoice (invoice_id, date_of_issue, contact_information, patient_charge, insurance_charge, total_fee_charge, discount, penalty) VALUES (%s, %s, %s, %s, %s, %s,%s, %s)"
+    checkIfEmployeeQuery = 'SELECT * FROM EMPLOYEE WHERE EMPLOYEE_ID = {}'.format(pID)
+
+    mycursor.execute(checkIfEmployeeQuery)
+    isEmployee = mycursor.fetchall()
+    if len(isEmployee) == 0:
+        discount = 0
+    else:
+        discount = 0.5
+    pCharge = float(pCharge) - float(pCharge) * discount
+    totalFee = pCharge + float(iCharge)
+
     data = (iID, DoI, contact, pCharge, iCharge, totalFee, discount, penalty)
     mycursor.execute(mySql_insert_query, data)
     mydb.commit()
     print("insert")
- 
-def invoiceUpdate(iID, DoI, contact, pCharge, iCharge, totalFee, discount, penalty):
+
+
+def invoiceUpdate(iID, pID, DoI, contact, pCharge, iCharge, penalty):
     mydb = mysql.connector.connect(
-        host = hostName,
+        host=hostName,
         user=userName,
         password=passwordString,
         database=databaseName
     )
-    mycursor=mydb.cursor()
+    mycursor = mydb.cursor()
     sql_update_query = """Update invoice set date_of_issue = %s, contact_information = %s, patient_charge = %s, insurance_charge = %s, total_fee_charge = %s, discount = %s,
     penalty = %s where invoice_id = %s"""
-    data = ( DoI, contact, pCharge, iCharge, totalFee, discount, penalty, iID)
+    checkIfEmployeeQuery = 'SELECT * FROM EMPLOYEE WHERE EMPLOYEE_ID = {}'.format(pID)
+
+    mycursor.execute(checkIfEmployeeQuery)
+    isEmployee = mycursor.fetchall()
+    if len(isEmployee) == 0:
+        discount = 0
+    else:
+        discount = 0.5
+    pCharge = float(pCharge) - float(pCharge) * discount
+    totalFee = pCharge + float(iCharge)
+
+    data = (DoI, contact, pCharge, iCharge, totalFee, discount, penalty, iID)
     mycursor.execute(sql_update_query, data)
     mydb.commit()
     print("update final")
- 
- 
+
+
 ###HANDLES FEE-----------------------------------------------------------
 def feeInsertion(feeID, procedure, code, charge):
     mydb = mysql.connector.connect(
@@ -679,43 +702,42 @@ def invoice():
     contact = request.form.get('conInfo')
     pCharge = request.form.get('pCharge')
     iCharge = request.form.get('iCharge')
- 
-    totalFee = 0
-    discount = request.form.get('discount')
+    pID = request.form.get('pID')
+
     penalty = request.form.get('penalty')
     if request.method == "POST":
         if request.form.get('Add') == 'Add':
-            invoiceInsertion(iID, DoI, contact, pCharge, iCharge, totalFee, discount, penalty)
-        elif  request.form.get('Update') == 'Update':
-            invoiceUpdate(iID, DoI, contact, pCharge, iCharge, totalFee, discount, penalty)
+            invoiceInsertion(iID, pID, DoI, contact, pCharge, iCharge, penalty)
+        elif request.form.get('Update') == 'Update':
+            invoiceUpdate(iID, pID, DoI, contact, pCharge, iCharge, penalty)
         else:
             pass
- 
+
     return '''
-    <h2>Add or Edit Invoic Data</h2>
- 
+    <h2>Add or Edit Invoice Data</h2>
+
         <form method="POST">
-        <label for="iID">Invoic ID:</label><br>
+        <label for="iID">Invoice ID:</label><br>
         <input type="text" id="iID" name="iID" value=""><br>
- 
+
+        <label for="pID">Patient ID:</label><br>
+        <input type="text" id="pID" name="pID" value=""><br>
+
         <label for="date">Date of Issue:</label><br>
         <input type="date" id="date" name="date" value=""><br>
- 
+
         <label for="conInfo">Contact Information (phone number):</label><br>
         <input type="tel" id="conInfo" name="conInfo" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required><br>
- 
+
         <label for="pCharge">Patient Charge:</label><br>
         <input type="text" id="pCharge" name="pCharge" value=""><br>
- 
+
         <label for="iCharge">Insurance Charge:</label><br>
         <input type="text" id="iCharge" name="iCharge" value=""><br>
- 
-        <label for="discount">Discount:</label><br>
-        <input type="text" id="discount" name="discount" value=""><br>
- 
+
         <label for="penalty">Penalty:</label><br>
         <input type="text" id="penalty" name="penalty" value=""><br><br>
- 
+
         <input type="submit" value="Add" name="Add">
         <input type="submit" value="Update" name="Update"><br>
         <button type="button" onclick="location.href='/receptionist/selection'">Back</button>
