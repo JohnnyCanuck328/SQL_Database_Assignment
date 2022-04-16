@@ -74,7 +74,7 @@ def patientRecord():
         password=passwordString
     )
     mycursor = mydb.cursor()
-    myquery = "SELECT * FROM RECORD WHERE RECORDID IN (SELECT RECORD FROM APPOINTMENT WHERE PATIENT = %s)"
+    myquery = "SELECT * FROM RECORD WHERE RECORD_ID IN (SELECT RECORD_ FROM APPOINTMENT WHERE PATIENT = %s)"
     try:
         mycursor.execute(myquery, patientID)
         myresult = mycursor.fetchall()
@@ -96,7 +96,7 @@ def patientBilling():
         password=passwordString
     )
     mycursor = mydb.cursor()
-    myquery = "SELECT * FROM PATIENT_BILLING WHERE PROCEDURE_ IN (SELECT PROCEDURE_ID FROM APPOINTMENT_PROCEDURE WHERE PATIENT_PROC = %s))"
+    myquery = "SELECT * FROM PATIENT_BILLING WHERE PROCEDURE_ IN (SELECT PROCEDURE_ID FROM APPOINTMENT_PROCEDURE WHERE PATIENT_PROC = %s)"
     try:
         mycursor.execute(myquery, patientID)
         myresult = mycursor.fetchall()
