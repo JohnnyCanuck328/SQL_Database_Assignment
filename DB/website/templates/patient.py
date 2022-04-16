@@ -78,6 +78,7 @@ def patientRecord():
     try:
         mycursor.execute(myquery, patientID)
         myresult = mycursor.fetchall()
+        print(myresult)
     except Exception as e:
         print(e)
     else:
@@ -99,6 +100,7 @@ def patientBilling():
     try:
         mycursor.execute(myquery, patientID)
         myresult = mycursor.fetchall()
+        print(myresult)
     except Exception as e:
         print(e)
     else:
