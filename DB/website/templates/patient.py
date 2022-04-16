@@ -12,7 +12,7 @@ patient = Blueprint('patient', __name__)
 hostName = "localhost"
 databaseName = "project"
 userName = "root"
-passwordString = "lanhui1065971675"
+passwordString = "1qaz@WSX"
 
 
 def idCheck(id):
