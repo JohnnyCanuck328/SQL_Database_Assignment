@@ -1,26 +1,30 @@
-{% extends "base.html" %} {% block title %} Appointment {% endblock %}
-{% block content %}
-<br/>
+{% extends "base.html" %} {% block title %} Appointment {% endblock %} {% block
+content %}
+<br />
 <table>
-    <tr>
-        <th>Appointment ID</th>
-        <th>Start time</th>
-        <th>End time</th>
-        <th>Date</th>
-        <th>Appointment Type</th>
-        <th>Room Assigned</th>
-        <th>Patient</th>
-        <th>Dentist</th>
-        <th>Record</th>
-        <th>Invoice</th>
-    </tr>
-    {% for row in data %}
-    <tr>
-        {% for cell in row %}
-        <td>{{cell}}</td>
-        {% endfor %}
-    </tr>
+  <colgroup>
+  </colgroup>
+  <tr>
+    <th>Appointment ID</th>
+    <th>Start time</th>
+    <th>End time</th>
+    <th>Date</th>
+    <th>Appointment Type</th>
+    <th>Status</th>
+    <th>Room Assigned</th>
+    <th>Patient</th>
+    <th>Dentist</th>
+    <th>Record</th>
+    <th>Invoice</th>
+  </tr>
+  {% for row in data %}
+  <tr>
+    {% for cell in row %}
+    <td>{{cell}}</td>
     {% endfor %}
-</table><br>
-<button type="button" onclick="location.href='/dentist/selection'">Back</button>
+  </tr>
+  {% endfor %}
+</table>
+<br />
+<button type="button" onclick="location.href='/dentist/selection'" class="btn btn-primary" >Back</button>
 {% endblock %}

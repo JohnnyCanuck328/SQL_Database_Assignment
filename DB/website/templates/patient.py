@@ -12,7 +12,7 @@ patient = Blueprint('patient', __name__)
 hostName = "localhost"
 databaseName = "project"
 userName = "root"
-passwordString = "1qaz@WSX"
+passwordString = "lanhui1065971675"
 
 
 def idCheck(id):
@@ -116,7 +116,6 @@ def login():
     id = request.form.get('pID')
     if request.method == "POST":
         if idCheck(id):
-            flash('Success', category='success')
             return redirect(url_for('patient.selection'))
         else:
             flash('Invalid patient ID, try again.', category='error')
@@ -126,20 +125,7 @@ def login():
 
 @patient.route('/patient/selection', methods=['GET', 'POST'])
 def selection():
-    return '''
-        <h2>Hello, Please Choose What You Would Like to Do</h2>
-
-        <button type="button" onclick="location.href='/patient/appointment'">Appointment Information</button>
-        <button type="button" onclick="location.href='/patient/record'">Record Information</button><br>
-
-        <button type="button" onclick="location.href='/patient/billing'">Billing Information</button>
-        <button type="button" onclick="location.href='/'">Home</button>
-
-    </form>
-
-</body>
-</html>
-    '''
+    return render_template("patientSelection.html")
 
 
 @patient.route('/patient/appointment', methods=['GET', 'POST'])

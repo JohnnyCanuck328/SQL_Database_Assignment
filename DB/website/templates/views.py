@@ -12,7 +12,7 @@ def home():
 <h2>Please login or sign up</h2>
 
 <button type="button" onclick="location.href='/receptionist/selection'">Receptionist</button>
-<button type="button" onclick="location.href='/dentist/selection'">Dentist</button>
+<button type="button" onclick="location.href='/dentist/login'">Dentist</button>
 <button type="button" onclick="location.href='/patient/login'">Patient</button>
  
 </body>

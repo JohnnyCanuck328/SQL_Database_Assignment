@@ -1,12 +1,18 @@
-{% extends "base2.html" %} {% block title %} Login {% endblock %}
-{% block content %}
-<br/>
+{% extends "base2.html" %} {% block title %} Login {% endblock %} {% block
+content %}
+<br />
 <form name="patientLogin" form action="" onsubmit="" method="POST">
-    <label for="pID">Patient ID: </label>
-    <input type="number" min="100000" max="999999" id="pID" name="pID" value=""><br><br>
+  <label for="pID">Patient ID: </label>
+  <input
+    type="number"
+    min="100000"
+    max="999999"
+    id="pID"
+    name="pID"
+    value=""
+  /><br /><br />
 
-    <input type="submit" value="login" name="login">
-    <button type="button" onclick="location.href='/'">Home</button>
-</form>>
-
+  <input type="submit" value="login" name="login" class="btn btn-primary"/>
+  <button type="button" onclick="location.href='/'" class="btn btn-primary">Home</button>
+</form>
 {% endblock %}

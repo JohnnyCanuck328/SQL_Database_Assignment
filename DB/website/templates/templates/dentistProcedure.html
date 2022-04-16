@@ -1,26 +1,27 @@
-{% extends "base.html" %} {% block title %} Procedure {% endblock %}
-{% block content %}
-<br/>
+{% extends "base.html" %} {% block title %} Procedure {% endblock %} {% block
+content %}
+<br />
 <table>
-    <tr>
-        <th>Procedure ID</th>
-        <th>Procedure Code</th>
-        <th>Date</th>
-        <th>Patient ID</th>
-        <th>Tooth involved</th>
-        <th>Procedure Type</th>
-        <th>Appointment</th>
-        <th>Description</th>
-        <th>Does Amount</th>
-        <th>Invoice</th>
-    </tr>
-    {% for row in data %}
-    <tr>
-        {% for cell in row %}
-        <td>{{cell}}</td>
-        {% endfor %}
-    </tr>
+  <tr>
+    <th>Procedure ID</th>
+    <th>Procedure Code</th>
+    <th>Date</th>
+    <th>Patient ID</th>
+    <th>Tooth involved</th>
+    <th>Procedure Type</th>
+    <th>Appointment</th>
+    <th>Description</th>
+    <th>Does Amount</th>
+    <th>Invoice</th>
+  </tr>
+  {% for row in data %}
+  <tr>
+    {% for cell in row %}
+    <td>{{cell}}</td>
     {% endfor %}
-</table><br>
-<button type="button" onclick="location.href='/dentist/selection'">Back</button>
+  </tr>
+  {% endfor %}
+</table>
+<br />
+<button type="button" onclick="location.href='/dentist/selection'" class="btn btn-primary">Back</button>
 {% endblock %}

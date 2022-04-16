@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% block title %} Selection {% endblock %} {% block
+content %}
+<br />
+<form name="DentistSelection" form action="" onsubmit="" method="POST">
+  <h2>Hello, Please Choose What You Would Like to Do</h2>
+  <br><br>
+  <button
+    type="button"
+    onclick="location.href='/dentist/appointment'"
+    class="btn btn-primary"
+  >
+    Appointment Information</button
+  ><br /><br />
+
+  <button
+    type="button"
+    onclick="location.href='/dentist/treatment'"
+    class="btn btn-primary"
+  >
+    Treatment Information</button
+  ><br /><br />
+
+  <button
+    type="button"
+    onclick="location.href='/dentist/procedure'"
+    class="btn btn-primary"
+  >
+    Procedure Information</button
+  ><br /><br />
+
+  <button
+    type="button"
+    onclick="location.href='/dentist/record'"
+    class="btn btn-primary"
+  >
+    Record Information</button
+  ><br /><br />
+
+  <button type="button" onclick="location.href='/'" class="btn btn-primary">
+    Home
+  </button>
+</form>
+
+{% endblock %}
